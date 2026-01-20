@@ -5,9 +5,10 @@ use futures_core::task::{Context, Poll};
 use pin_project_lite::pin_project;
 
 /// Type to tell [`SelectWithStrategy`] which stream to poll next.
-#[derive(Debug, PartialEq, Eq, Copy, Clone, Hash)]
+#[derive(Debug, Default, PartialEq, Eq, Copy, Clone, Hash)]
 pub enum PollNext {
     /// Poll the first stream.
+    #[default]
     Left,
     /// Poll the second stream.
     Right,
@@ -27,12 +28,6 @@ impl PollNext {
             Self::Left => Self::Right,
             Self::Right => Self::Left,
         }
-    }
-}
-
-impl Default for PollNext {
-    fn default() -> Self {
-        Self::Left
     }
 }
 
