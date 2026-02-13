@@ -97,11 +97,11 @@ impl<R: AsyncRead + AsyncSeek> BufReader<R> {
                 *self.project().pos = new_pos as usize;
                 return Poll::Ready(Ok(()));
             }
-        } else if let Some(new_pos) = pos.checked_add(offset as u64) {
-            if new_pos <= self.cap as u64 {
-                *self.project().pos = new_pos as usize;
-                return Poll::Ready(Ok(()));
-            }
+        } else if let Some(new_pos) = pos.checked_add(offset as u64)
+            && new_pos <= self.cap as u64
+        {
+            *self.project().pos = new_pos as usize;
+            return Poll::Ready(Ok(()));
         }
         self.poll_seek(cx, SeekFrom::Current(offset)).map(|res| res.map(|_| ()))
     }

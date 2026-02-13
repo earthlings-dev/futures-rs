@@ -1,6 +1,6 @@
 use futures::channel::{mpsc, oneshot};
 use futures::executor::block_on;
-use futures::future::{self, poll_fn, FutureExt};
+use futures::future::{self, FutureExt, poll_fn};
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
 use futures::task::{Context, Poll};

@@ -1,5 +1,5 @@
 use futures::channel::oneshot;
-use futures::executor::{block_on, LocalPool};
+use futures::executor::{LocalPool, block_on};
 use futures::future::{self, FutureExt, LocalFutureObj, TryFutureExt};
 use futures::task::LocalSpawn;
 use std::cell::{Cell, RefCell};

@@ -3,8 +3,8 @@ use core::cell::UnsafeCell;
 use core::sync::atomic::Ordering::{self, Relaxed, SeqCst};
 use core::sync::atomic::{AtomicBool, AtomicPtr};
 
-use super::abort::abort;
 use super::ReadyToRunQueue;
+use super::abort::abort;
 use crate::task::ArcWake;
 
 pub(super) struct Task<Fut> {

@@ -1,10 +1,16 @@
 [package]
 name = "no-std"
 version = "0.0.0"
-edition = "2018"
+edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [features]
+futures-core = ["dep:futures-core"]
+futures-task = ["dep:futures-task"]
+futures-channel = ["dep:futures-channel"]
+futures-util = ["dep:futures-util"]
+futures = ["dep:futures"]
 futures-core-alloc = ["futures-core/alloc"]
 futures-task-alloc = ["futures-task/alloc"]
 futures-channel-alloc = ["futures-channel/alloc"]
@@ -14,11 +20,11 @@ futures-alloc = ["futures/alloc"]
 futures-async-await = ["futures/async-await"]
 
 [dependencies]
-futures-core = { path = "../../../futures-core", optional = true, default-features = false }
-futures-task = { path = "../../../futures-task", optional = true, default-features = false }
-futures-channel = { path = "../../../futures-channel", optional = true, default-features = false }
-futures-util = { path = "../../../futures-util", optional = true, default-features = false }
-futures = { path = "../..", optional = true, default-features = false }
+futures-core = { workspace = true, optional = true }
+futures-task = { workspace = true, optional = true }
+futures-channel = { workspace = true, optional = true }
+futures-util = { workspace = true, optional = true }
+futures = { workspace = true, optional = true }
 
 [lints]
 workspace = true

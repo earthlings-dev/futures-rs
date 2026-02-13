@@ -9,12 +9,12 @@ use futures_sink::Sink;
 
 use pin_project_lite::pin_project;
 
+use crate::TryStreamExt;
 use crate::future::Either;
+use crate::stream::IntoStream;
 use crate::stream::stream::flatten_unordered::{
     FlattenUnorderedWithFlowController, FlowController, FlowStep,
 };
-use crate::stream::IntoStream;
-use crate::TryStreamExt;
 
 delegate_all!(
     /// Stream for the [`try_flatten_unordered`](super::TryStreamExt::try_flatten_unordered) method.

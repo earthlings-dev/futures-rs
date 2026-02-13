@@ -2,9 +2,9 @@ use core::pin::Pin;
 use std::convert::Infallible;
 
 use futures::{
-    stream::{self, repeat, Repeat, StreamExt, TryStreamExt},
-    task::Poll,
     Stream,
+    stream::{self, Repeat, StreamExt, TryStreamExt, repeat},
+    task::Poll,
 };
 use futures_executor::block_on;
 use futures_task::Context;
@@ -47,7 +47,7 @@ fn try_take_while_after_err() {
 fn try_flatten_unordered() {
     let test_st = stream::iter(1..7)
         .map(|val: u32| {
-            if val % 2 == 0 {
+            if val.is_multiple_of(2) {
                 Ok(stream::unfold((val, 1), |(val, pow)| async move {
                     Some((val.pow(pow), (val, pow + 1)))
                 })
@@ -135,7 +135,7 @@ fn try_flatten_unordered() {
 }
 
 async fn is_even(number: u8) -> bool {
-    number % 2 == 0
+    number.is_multiple_of(2)
 }
 
 #[test]

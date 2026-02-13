@@ -10,7 +10,7 @@ use core::mem;
 use core::pin::Pin;
 use core::task::{Context, Poll};
 
-use super::{assert_future, MaybeDone};
+use super::{MaybeDone, assert_future};
 
 #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
 use crate::stream::{Collect, FuturesOrdered, StreamExt};

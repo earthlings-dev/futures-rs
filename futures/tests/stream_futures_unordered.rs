@@ -1,6 +1,6 @@
 use futures::channel::oneshot;
 use futures::executor::{block_on, block_on_stream};
-use futures::future::{self, join, Future, FutureExt};
+use futures::future::{self, Future, FutureExt, join};
 use futures::stream::{FusedStream, FuturesUnordered, StreamExt};
 use futures::task::{Context, Poll};
 use futures_test::future::FutureTestExt;

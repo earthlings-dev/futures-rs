@@ -1,6 +1,6 @@
 use futures::channel::oneshot;
 use futures::executor::ThreadPool;
-use futures::future::{self, ok, Future, FutureExt, TryFutureExt};
+use futures::future::{self, Future, FutureExt, TryFutureExt, ok};
 use futures::task::SpawnExt;
 use std::sync::mpsc;
 use std::thread;

@@ -14,8 +14,8 @@ use {
         panic::{self, AssertUnwindSafe},
         pin::Pin,
         sync::{
-            atomic::{AtomicBool, Ordering},
             Arc,
+            atomic::{AtomicBool, Ordering},
         },
         thread,
     },

@@ -138,10 +138,10 @@ impl<T> Inner<T> {
             if self.complete.load(SeqCst) {
                 // If lock acquisition fails, then receiver is actually
                 // receiving it, so we're good.
-                if let Some(mut slot) = self.data.try_lock() {
-                    if let Some(t) = slot.take() {
-                        return Err(t);
-                    }
+                if let Some(mut slot) = self.data.try_lock()
+                    && let Some(t) = slot.take()
+                {
+                    return Err(t);
                 }
             }
             Ok(())
@@ -178,11 +178,7 @@ impl<T> Inner<T> {
             Some(mut p) => *p = Some(handle),
             None => return Poll::Ready(()),
         }
-        if self.complete.load(SeqCst) {
-            Poll::Ready(())
-        } else {
-            Poll::Pending
-        }
+        if self.complete.load(SeqCst) { Poll::Ready(()) } else { Poll::Pending }
     }
 
     fn is_canceled(&self) -> bool {
@@ -212,11 +208,11 @@ impl<T> Inner<T> {
         // https://github.com/rust-lang/futures-rs/pull/219.
         self.complete.store(true, SeqCst);
 
-        if let Some(mut slot) = self.rx_task.try_lock() {
-            if let Some(task) = slot.take() {
-                drop(slot);
-                task.wake();
-            }
+        if let Some(mut slot) = self.rx_task.try_lock()
+            && let Some(task) = slot.take()
+        {
+            drop(slot);
+            task.wake();
         }
 
         // If we registered a task for cancel notification drop it to reduce
@@ -230,11 +226,11 @@ impl<T> Inner<T> {
         // Flag our completion and then attempt to wake up the sender if it's
         // blocked. See comments in `drop` below for more info
         self.complete.store(true, SeqCst);
-        if let Some(mut handle) = self.tx_task.try_lock() {
-            if let Some(task) = handle.take() {
-                drop(handle);
-                task.wake()
-            }
+        if let Some(mut handle) = self.tx_task.try_lock()
+            && let Some(task) = handle.take()
+        {
+            drop(handle);
+            task.wake()
         }
     }
 
@@ -242,10 +238,10 @@ impl<T> Inner<T> {
         // If we're complete, either `::close_rx` or `::drop_tx` was called.
         // We can assume a successful send if data is present.
         if self.complete.load(SeqCst) {
-            if let Some(mut slot) = self.data.try_lock() {
-                if let Some(data) = slot.take() {
-                    return Ok(Some(data));
-                }
+            if let Some(mut slot) = self.data.try_lock()
+                && let Some(data) = slot.take()
+            {
+                return Ok(Some(data));
             }
             Err(Canceled)
         } else {
@@ -286,10 +282,10 @@ impl<T> Inner<T> {
             // If taking the lock fails, the sender will realise that the we're
             // `done` when it checks the `complete` flag on the way out, and
             // will treat the send as a failure.
-            if let Some(mut slot) = self.data.try_lock() {
-                if let Some(data) = slot.take() {
-                    return Poll::Ready(Ok(data));
-                }
+            if let Some(mut slot) = self.data.try_lock()
+                && let Some(data) = slot.take()
+            {
+                return Poll::Ready(Ok(data));
             }
             Poll::Ready(Err(Canceled))
         } else {
@@ -319,11 +315,11 @@ impl<T> Inner<T> {
         // Note that the `try_lock` here may fail, but only if the `Sender` is
         // in the process of filling in the task. If that happens then we
         // already flagged `complete` and they'll pick that up above.
-        if let Some(mut handle) = self.tx_task.try_lock() {
-            if let Some(task) = handle.take() {
-                drop(handle);
-                task.wake()
-            }
+        if let Some(mut handle) = self.tx_task.try_lock()
+            && let Some(task) = handle.take()
+        {
+            drop(handle);
+            task.wake()
         }
     }
 }
@@ -463,10 +459,10 @@ impl<T> Future for Receiver<T> {
 impl<T> FusedFuture for Receiver<T> {
     fn is_terminated(&self) -> bool {
         if self.inner.complete.load(SeqCst) {
-            if let Some(slot) = self.inner.data.try_lock() {
-                if slot.is_some() {
-                    return false;
-                }
+            if let Some(slot) = self.inner.data.try_lock()
+                && slot.is_some()
+            {
+                return false;
             }
             true
         } else {

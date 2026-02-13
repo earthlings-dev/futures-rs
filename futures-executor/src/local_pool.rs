@@ -2,7 +2,7 @@ use crate::enter;
 use futures_core::future::Future;
 use futures_core::stream::Stream;
 use futures_core::task::{Context, Poll};
-use futures_task::{waker_ref, ArcWake};
+use futures_task::{ArcWake, waker_ref};
 use futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
 use futures_util::stream::FuturesUnordered;
 use futures_util::stream::StreamExt;
@@ -11,8 +11,8 @@ use std::ops::{Deref, DerefMut};
 use std::pin::pin;
 use std::rc::{Rc, Weak};
 use std::sync::{
-    atomic::{AtomicBool, Ordering},
     Arc,
+    atomic::{AtomicBool, Ordering},
 };
 use std::thread::{self, Thread};
 use std::vec::Vec;
@@ -373,11 +373,7 @@ impl Spawn for LocalSpawner {
     }
 
     fn status(&self) -> Result<(), SpawnError> {
-        if self.incoming.upgrade().is_some() {
-            Ok(())
-        } else {
-            Err(SpawnError::shutdown())
-        }
+        if self.incoming.upgrade().is_some() { Ok(()) } else { Err(SpawnError::shutdown()) }
     }
 }
 
@@ -392,10 +388,6 @@ impl LocalSpawn for LocalSpawner {
     }
 
     fn status_local(&self) -> Result<(), SpawnError> {
-        if self.incoming.upgrade().is_some() {
-            Ok(())
-        } else {
-            Err(SpawnError::shutdown())
-        }
+        if self.incoming.upgrade().is_some() { Ok(()) } else { Err(SpawnError::shutdown()) }
     }
 }

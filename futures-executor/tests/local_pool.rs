@@ -1,13 +1,13 @@
 use futures::channel::oneshot;
 use futures::executor::LocalPool;
-use futures::future::{self, lazy, poll_fn, Future};
+use futures::future::{self, Future, lazy, poll_fn};
 use futures::task::{Context, LocalSpawn, LocalSpawnExt, Poll, Spawn, SpawnExt, Waker};
 use std::cell::{Cell, RefCell};
 use std::marker::PhantomData;
 use std::pin::Pin;
 use std::rc::Rc;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread;
 use std::time::Duration;
 
@@ -184,11 +184,7 @@ fn try_run_one_returns_on_no_progress() {
                 Box::pin(poll_fn(move |ctx| {
                     cnt.set(cnt.get() + 1);
                     waker.set(Some(ctx.waker().clone()));
-                    if cnt.get() == ITER {
-                        Poll::Ready(())
-                    } else {
-                        Poll::Pending
-                    }
+                    if cnt.get() == ITER { Poll::Ready(()) } else { Poll::Pending }
                 }))
                 .into(),
             )
@@ -416,7 +412,7 @@ fn park_unpark_independence() {
         }
         done = true;
         cx.waker().wake_by_ref(); // (*)
-                                  // some user-code that temporarily parks the thread
+        // some user-code that temporarily parks the thread
         let test = thread::current();
         let latch = Arc::new(AtomicBool::new(false));
         let signal = latch.clone();

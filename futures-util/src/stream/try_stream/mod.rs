@@ -6,11 +6,11 @@
 #[cfg(feature = "compat")]
 use crate::compat::Compat;
 use crate::fns::{
-    inspect_err_fn, inspect_ok_fn, into_fn, map_err_fn, map_ok_fn, InspectErrFn, InspectOkFn,
-    IntoFn, MapErrFn, MapOkFn,
+    InspectErrFn, InspectOkFn, IntoFn, MapErrFn, MapOkFn, inspect_err_fn, inspect_ok_fn, into_fn,
+    map_err_fn, map_ok_fn,
 };
 use crate::future::assert_future;
-use crate::stream::{assert_stream, Inspect, Map};
+use crate::stream::{Inspect, Map, assert_stream};
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 use core::pin::Pin;
@@ -116,7 +116,7 @@ mod try_ready_chunks;
 pub use self::try_ready_chunks::{TryReadyChunks, TryReadyChunksError};
 
 mod try_unfold;
-pub use self::try_unfold::{try_unfold, TryUnfold};
+pub use self::try_unfold::{TryUnfold, try_unfold};
 
 mod try_skip_while;
 pub use self::try_skip_while::TrySkipWhile;
@@ -1005,14 +1005,11 @@ pub trait TryStreamExt: TryStream {
 
     /// Wraps a [`TryStream`] into a stream compatible with libraries using
     /// futures 0.1 `Stream`. Requires the `compat` feature to be enabled.
-    /// ```
-    /// # if cfg!(miri) { return; } // Miri does not support epoll
+    /// ```ignore
     /// use futures::future::{FutureExt, TryFutureExt};
-    /// # let (tx, rx) = futures::channel::oneshot::channel();
     ///
     /// let future03 = async {
     ///     println!("Running on the pool");
-    ///     tx.send(42).unwrap();
     /// };
     ///
     /// let future01 = future03
@@ -1020,8 +1017,7 @@ pub trait TryStreamExt: TryStream {
     ///     .boxed()  // Make it Unpin
     ///     .compat();
     ///
-    /// tokio::run(future01);
-    /// # assert_eq!(42, futures::executor::block_on(rx).unwrap());
+    /// tokio::run(future01); // tokio 0.1
     /// ```
     #[cfg(feature = "compat")]
     #[cfg_attr(docsrs, doc(cfg(feature = "compat")))]

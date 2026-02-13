@@ -118,11 +118,11 @@ where
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<St::Item>> {
         let mut this = self.project();
 
-        if let Some(f) = this.fut.as_mut().as_pin_mut() {
-            if let Poll::Ready(result) = f.poll(cx) {
-                this.fut.set(None);
-                *this.fut_result = Some(result);
-            }
+        if let Some(f) = this.fut.as_mut().as_pin_mut()
+            && let Poll::Ready(result) = f.poll(cx)
+        {
+            this.fut.set(None);
+            *this.fut_result = Some(result);
         }
 
         if !*this.free && this.fut.is_none() {

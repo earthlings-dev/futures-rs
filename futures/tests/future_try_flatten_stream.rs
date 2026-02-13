@@ -1,5 +1,5 @@
 use futures::executor::block_on_stream;
-use futures::future::{err, ok, TryFutureExt};
+use futures::future::{TryFutureExt, err, ok};
 use futures::sink::Sink;
 use futures::stream::Stream;
 use futures::stream::{self, StreamExt};

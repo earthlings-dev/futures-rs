@@ -8,8 +8,8 @@ use futures_core::future::Future;
 use futures_core::ready;
 use futures_core::stream::Stream;
 use futures_core::{
-    task::{Context, Poll},
     FusedStream,
+    task::{Context, Poll},
 };
 use pin_project_lite::pin_project;
 
@@ -195,11 +195,11 @@ impl<Fut: Future> Stream for FuturesOrdered<Fut> {
         let this = &mut *self;
 
         // Check to see if we've already received the next value
-        if let Some(next_output) = this.queued_outputs.peek_mut() {
-            if next_output.index == this.next_outgoing_index {
-                this.next_outgoing_index += 1;
-                return Poll::Ready(Some(PeekMut::pop(next_output).data));
-            }
+        if let Some(next_output) = this.queued_outputs.peek_mut()
+            && next_output.index == this.next_outgoing_index
+        {
+            this.next_outgoing_index += 1;
+            return Poll::Ready(Some(PeekMut::pop(next_output).data));
         }
 
         loop {

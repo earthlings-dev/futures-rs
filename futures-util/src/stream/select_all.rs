@@ -9,7 +9,7 @@ use futures_core::stream::{FusedStream, Stream};
 use futures_core::task::{Context, Poll};
 
 use super::assert_stream;
-use crate::stream::{futures_unordered, FuturesUnordered, StreamExt, StreamFuture};
+use crate::stream::{FuturesUnordered, StreamExt, StreamFuture, futures_unordered};
 
 /// An unbounded set of streams
 ///

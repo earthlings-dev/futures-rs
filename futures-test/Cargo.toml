@@ -1,27 +1,27 @@
 [package]
 name = "futures-test"
 version = "0.4.0-alpha.0"
-edition = "2018"
-rust-version = "1.68"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-homepage = "https://rust-lang.github.io/futures-rs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
 description = """
 Common utilities for testing components built off futures-rs.
 """
 
 [dependencies]
-futures-core = { version = "=1.0.0-alpha.0", path = "../futures-core", default-features = false }
-futures-task = { version = "=0.4.0-alpha.0", path = "../futures-task", default-features = false }
-futures-io = { version = "0.3.31", path = "../futures-io", default-features = false }
-futures-util = { version = "=0.4.0-alpha.0", path = "../futures-util", default-features = false }
-futures-executor = { version = "=0.4.0-alpha.0", path = "../futures-executor", default-features = false }
-futures-sink = { version = "=0.4.0-alpha.0", path = "../futures-sink", default-features = false }
-futures-macro = { version = "=0.4.0-alpha.0", path = "../futures-macro", default-features = false }
-pin-project = "1.0.11"
+futures-core = { workspace = true }
+futures-task = { workspace = true }
+futures-io = { workspace = true }
+futures-util = { workspace = true }
+futures-executor = { workspace = true }
+futures-sink = { workspace = true }
+futures-macro = { workspace = true }
+pin-project = { workspace = true }
 
 [dev-dependencies]
-futures = { path = "../futures", default-features = false, features = ["std", "executor"] }
+futures = { workspace = true, features = ["std", "executor"] }
 
 [features]
 default = ["std"]

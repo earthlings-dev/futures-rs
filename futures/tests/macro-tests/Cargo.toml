@@ -1,12 +1,13 @@
 [package]
 name = "macro-tests"
 version = "0.0.0"
-edition = "2018"
+edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
-futures04 = { path = "../..", package = "futures" }
-macro-reexport = { path = "../macro-reexport" }
+futures04 = { workspace = true }
+macro-reexport = { workspace = true }
 
 [lints]
 workspace = true

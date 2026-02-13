@@ -1,4 +1,4 @@
-use crate::task::{waker_ref, ArcWake};
+use crate::task::{ArcWake, waker_ref};
 use alloc::sync::{Arc, Weak};
 use core::cell::UnsafeCell;
 use core::fmt;
@@ -385,18 +385,18 @@ where
     Fut: Future,
 {
     fn drop(&mut self) {
-        if self.waker_key != NULL_WAKER_KEY {
-            if let Some(ref inner) = self.inner {
-                #[cfg(feature = "std")]
-                if let Ok(mut wakers) = inner.notifier.wakers.lock() {
-                    if let Some(wakers) = wakers.as_mut() {
-                        wakers.remove(self.waker_key);
-                    }
-                }
-                #[cfg(not(feature = "std"))]
-                if let Some(wakers) = inner.notifier.wakers.lock().as_mut() {
-                    wakers.remove(self.waker_key);
-                }
+        if self.waker_key != NULL_WAKER_KEY
+            && let Some(ref inner) = self.inner
+        {
+            #[cfg(feature = "std")]
+            if let Ok(mut wakers) = inner.notifier.wakers.lock()
+                && let Some(wakers) = wakers.as_mut()
+            {
+                wakers.remove(self.waker_key);
+            }
+            #[cfg(not(feature = "std"))]
+            if let Some(wakers) = inner.notifier.wakers.lock().as_mut() {
+                wakers.remove(self.waker_key);
             }
         }
     }

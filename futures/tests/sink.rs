@@ -1,6 +1,6 @@
 use futures::channel::{mpsc, oneshot};
 use futures::executor::block_on;
-use futures::future::{self, poll_fn, Future, FutureExt, TryFutureExt};
+use futures::future::{self, Future, FutureExt, TryFutureExt, poll_fn};
 use futures::ready;
 use futures::sink::{self, Sink, SinkErrInto, SinkExt};
 use futures::stream::{self, Stream, StreamExt};
@@ -11,10 +11,10 @@ use std::collections::VecDeque;
 use std::convert::Infallible;
 use std::fmt;
 use std::mem;
-use std::pin::{pin, Pin};
+use std::pin::{Pin, pin};
 use std::rc::Rc;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 fn sassert_next<S>(s: &mut S, item: S::Item)
 where
@@ -179,11 +179,7 @@ impl<T: Unpin> Sink<T> for ManualAllow<T> {
     type Error = ();
 
     fn poll_ready(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
-        if self.allow.check(cx) {
-            Poll::Ready(Ok(()))
-        } else {
-            Poll::Pending
-        }
+        if self.allow.check(cx) { Poll::Ready(Ok(())) } else { Poll::Pending }
     }
 
     fn start_send(mut self: Pin<&mut Self>, item: T) -> Result<(), Self::Error> {

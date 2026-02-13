@@ -12,7 +12,7 @@ use futures::lock::Mutex;
 use futures::sink::SinkExt;
 use futures::stream::{self, StreamExt};
 use futures::task::Poll;
-use futures::{ready, FutureExt};
+use futures::{FutureExt, ready};
 use futures_core::Stream;
 use futures_executor::ThreadPool;
 use futures_test::task::noop_context;
@@ -50,11 +50,7 @@ fn scan() {
         let values = stream::iter(vec![1u8, 2, 3, 4, 6, 8, 2])
             .scan(1, |mut state, e| async move {
                 state += 1;
-                if e < state {
-                    Some((state, e))
-                } else {
-                    None
-                }
+                if e < state { Some((state, e)) } else { None }
             })
             .collect::<Vec<_>>()
             .await;
@@ -148,7 +144,7 @@ fn flatten_unordered() {
                 Poll::Ready(Some(DataStream {
                     polled: false,
                     data,
-                    wake_immediately: self.wake_immediately && self.base % 2 == 0,
+                    wake_immediately: self.wake_immediately && self.base.is_multiple_of(2),
                 }))
             }
         }
@@ -360,11 +356,7 @@ fn flatten_unordered() {
                 spawned = true;
             }
 
-            if ready.load(Ordering::Acquire) {
-                Poll::Ready(value.clone())
-            } else {
-                Poll::Pending
-            }
+            if ready.load(Ordering::Acquire) { Poll::Ready(value.clone()) } else { Poll::Pending }
         })
     }
 
@@ -421,11 +413,7 @@ fn take_until() {
         let mut i = 0;
         future::poll_fn(move |_cx| {
             i += 1;
-            if i <= stop_on {
-                Poll::Pending
-            } else {
-                Poll::Ready(())
-            }
+            if i <= stop_on { Poll::Pending } else { Poll::Ready(()) }
         })
     }
 
@@ -525,7 +513,7 @@ impl Stream for SlowStream {
 
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
         self.times_polled.set(self.times_polled.get() + 1);
-        if self.times_polled.get() % 2 == 0 {
+        if self.times_polled.get().is_multiple_of(2) {
             cx.waker().wake_by_ref();
             return Poll::Pending;
         }
@@ -554,7 +542,7 @@ fn select_with_strategy_doesnt_terminate_early() {
 }
 
 async fn is_even(number: u8) -> bool {
-    number % 2 == 0
+    number.is_multiple_of(2)
 }
 
 #[test]

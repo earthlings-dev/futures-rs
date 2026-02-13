@@ -1,4 +1,4 @@
-use crate::future::{assert_future, maybe_done, MaybeDone};
+use crate::future::{MaybeDone, assert_future, maybe_done};
 use core::fmt;
 use core::pin::Pin;
 use futures_core::future::{FusedFuture, Future};

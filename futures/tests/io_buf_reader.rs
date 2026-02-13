@@ -9,7 +9,7 @@ use futures_test::task::noop_context;
 use pin_project::pin_project;
 use std::cmp;
 use std::io;
-use std::pin::{pin, Pin};
+use std::pin::{Pin, pin};
 
 // helper for maybe_pending_* tests
 fn run<F: Future + Unpin>(mut f: F) -> F::Output {
@@ -287,11 +287,7 @@ fn test_short_reads() {
 
     impl io::Read for ShortReader {
         fn read(&mut self, _: &mut [u8]) -> io::Result<usize> {
-            if self.lengths.is_empty() {
-                Ok(0)
-            } else {
-                Ok(self.lengths.remove(0))
-            }
+            if self.lengths.is_empty() { Ok(0) } else { Ok(self.lengths.remove(0)) }
         }
     }
 

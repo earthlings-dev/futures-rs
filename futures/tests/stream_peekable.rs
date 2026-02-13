@@ -22,10 +22,10 @@ fn peekable_mut() {
     block_on(async {
         let s = stream::iter(vec![1u8, 2, 3]).peekable();
         let mut s = pin!(s);
-        if let Some(p) = s.as_mut().peek_mut().await {
-            if *p == 1 {
-                *p = 5;
-            }
+        if let Some(p) = s.as_mut().peek_mut().await
+            && *p == 1
+        {
+            *p = 5;
         }
         assert_eq!(s.collect::<Vec<_>>().await, vec![5, 2, 3]);
     });

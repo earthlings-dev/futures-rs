@@ -3,8 +3,8 @@ use crate::{
     future::{FutureExt, TryFutureExt, UnitError},
     task::SpawnExt,
 };
-use futures_01::future::{ExecuteError as ExecuteError01, Executor as Executor01};
 use futures_01::Future as Future01;
+use futures_01::future::{ExecuteError as ExecuteError01, Executor as Executor01};
 use futures_task::{FutureObj, Spawn as Spawn03, SpawnError as SpawnError03};
 
 /// A future that can run on a futures 0.1
@@ -16,28 +16,23 @@ pub trait Executor01CompatExt: Executor01<Executor01Future> + Clone + Send + 'st
     /// Converts a futures 0.1 [`Executor`](futures_01::future::Executor) into a
     /// futures 0.3 [`Spawn`](futures_task::Spawn).
     ///
-    /// ```
-    /// # if cfg!(miri) { return; } // Miri does not support epoll
+    /// ```ignore
     /// use futures::task::SpawnExt;
     /// use futures::future::{FutureExt, TryFutureExt};
     /// use futures_util::compat::Executor01CompatExt;
-    /// use tokio::executor::DefaultExecutor;
-    ///
-    /// # let (tx, rx) = futures::channel::oneshot::channel();
+    /// use tokio::executor::DefaultExecutor; // tokio 0.1
     ///
     /// let spawner = DefaultExecutor::current().compat();
     /// let future03 = async move {
     ///     println!("Running on the pool");
     ///     spawner.spawn(async {
     ///         println!("Spawned!");
-    ///         # tx.send(42).unwrap();
     ///     }).unwrap();
     /// };
     ///
     /// let future01 = future03.unit_error().boxed().compat();
     ///
-    /// tokio::run(future01);
-    /// # futures::executor::block_on(rx).unwrap();
+    /// tokio::run(future01); // tokio 0.1
     /// ```
     fn compat(self) -> Executor01As03<Self>
     where

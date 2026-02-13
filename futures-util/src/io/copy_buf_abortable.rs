@@ -5,8 +5,8 @@ use futures_io::{AsyncBufRead, AsyncWrite};
 use pin_project_lite::pin_project;
 use std::io;
 use std::pin::Pin;
-use std::sync::atomic::Ordering;
 use std::sync::Arc;
+use std::sync::atomic::Ordering;
 
 /// Creates a future which copies all the bytes from one object to another, with its `AbortHandle`.
 ///

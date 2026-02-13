@@ -60,8 +60,7 @@ impl<T: AsyncWrite> AsyncWrite for TrackClosed<T> {
         buf: &[u8],
     ) -> Poll<io::Result<usize>> {
         if self.is_closed() {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Poll::Ready(Err(io::Error::other(
                 "Attempted to write after stream was closed",
             )));
         }
@@ -70,8 +69,7 @@ impl<T: AsyncWrite> AsyncWrite for TrackClosed<T> {
 
     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
         if self.is_closed() {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Poll::Ready(Err(io::Error::other(
                 "Attempted to flush after stream was closed",
             )));
         }
@@ -81,8 +79,7 @@ impl<T: AsyncWrite> AsyncWrite for TrackClosed<T> {
 
     fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
         if self.is_closed() {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Poll::Ready(Err(io::Error::other(
                 "Attempted to close after stream was closed",
             )));
         }
@@ -102,8 +99,7 @@ impl<T: AsyncWrite> AsyncWrite for TrackClosed<T> {
         bufs: &[IoSlice<'_>],
     ) -> Poll<io::Result<usize>> {
         if self.is_closed() {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Poll::Ready(Err(io::Error::other(
                 "Attempted to write after stream was closed",
             )));
         }

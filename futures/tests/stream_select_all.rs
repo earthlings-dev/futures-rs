@@ -1,7 +1,7 @@
 use futures::channel::mpsc;
 use futures::executor::{block_on, block_on_stream};
 use futures::future::{self, FutureExt};
-use futures::stream::{self, select_all, FusedStream, SelectAll, StreamExt};
+use futures::stream::{self, FusedStream, SelectAll, StreamExt, select_all};
 use futures::task::Poll;
 use futures_test::task::noop_context;
 

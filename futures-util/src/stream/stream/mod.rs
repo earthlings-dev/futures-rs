@@ -3,7 +3,7 @@
 //! This module contains a number of functions for working with `Stream`s,
 //! including the `StreamExt` trait which adds methods to `Stream` types.
 
-use crate::future::{assert_future, Either};
+use crate::future::{Either, assert_future};
 use crate::stream::assert_stream;
 #[cfg(feature = "alloc")]
 use alloc::boxed::Box;
@@ -20,7 +20,7 @@ use futures_core::{
 #[cfg(feature = "sink")]
 use futures_sink::Sink;
 
-use crate::fns::{inspect_fn, InspectFn};
+use crate::fns::{InspectFn, inspect_fn};
 
 mod chain;
 pub use self::chain::Chain;

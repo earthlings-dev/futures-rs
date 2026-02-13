@@ -28,7 +28,7 @@ pub use futures_task::waker;
 
 #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
 #[cfg(feature = "alloc")]
-pub use futures_task::{waker_ref, WakerRef};
+pub use futures_task::{WakerRef, waker_ref};
 
 #[cfg_attr(
     target_os = "none",

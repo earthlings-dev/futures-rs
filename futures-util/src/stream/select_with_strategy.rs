@@ -236,11 +236,7 @@ where
     match poll_side(select, other, cx) {
         Poll::Ready(None) => {
             select.internal_state.finish(other);
-            if first_done {
-                Poll::Ready(None)
-            } else {
-                Poll::Pending
-            }
+            if first_done { Poll::Ready(None) } else { Poll::Pending }
         }
         a => a,
     }

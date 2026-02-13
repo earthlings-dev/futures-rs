@@ -1,11 +1,11 @@
 [package]
 name = "futures-io"
 version = "0.3.31"
-edition = "2018"
-rust-version = "1.36"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-homepage = "https://rust-lang.github.io/futures-rs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
 description = """
 The `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.
 """

@@ -79,10 +79,10 @@
 // by the queue structure.
 
 use core::future::Future;
+use futures_core::FusedFuture;
 use futures_core::stream::{FusedStream, Stream};
 use futures_core::task::__internal::AtomicWaker;
 use futures_core::task::{Context, Poll, Waker};
-use futures_core::FusedFuture;
 use std::fmt;
 use std::pin::Pin;
 use std::sync::atomic::AtomicUsize;
@@ -553,7 +553,7 @@ impl<T> BoundedSenderInner<T> {
                 return Err(TrySendError {
                     err: SendError { kind: SendErrorKind::Disconnected },
                     val: msg,
-                })
+                });
             }
         };
 
@@ -819,11 +819,11 @@ impl<T> UnboundedSender<T> {
 
     // Do the send without parking current task.
     fn do_send_nb(&self, msg: T) -> Result<(), TrySendError<T>> {
-        if let Some(inner) = &self.0 {
-            if inner.inc_num_messages().is_some() {
-                inner.queue_push_and_signal(msg);
-                return Ok(());
-            }
+        if let Some(inner) = &self.0
+            && inner.inc_num_messages().is_some()
+        {
+            inner.queue_push_and_signal(msg);
+            return Ok(());
         }
 
         Err(TrySendError { err: SendError { kind: SendErrorKind::Disconnected }, val: msg })
@@ -1091,10 +1091,10 @@ impl<T> Receiver<T> {
 
     // Unpark a single task handle if there is one pending in the parked queue
     fn unpark_one(&mut self) {
-        if let Some(inner) = &mut self.inner {
-            if let Some(task) = unsafe { inner.parked_queue.pop_spin() } {
-                task.lock().unwrap().notify();
-            }
+        if let Some(inner) = &mut self.inner
+            && let Some(task) = unsafe { inner.parked_queue.pop_spin() }
+        {
+            task.lock().unwrap().notify();
         }
     }
 

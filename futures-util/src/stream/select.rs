@@ -1,5 +1,5 @@
 use super::assert_stream;
-use crate::stream::{select_with_strategy, PollNext, SelectWithStrategy};
+use crate::stream::{PollNext, SelectWithStrategy, select_with_strategy};
 use core::pin::Pin;
 use futures_core::stream::{FusedStream, Stream};
 use futures_core::task::{Context, Poll};

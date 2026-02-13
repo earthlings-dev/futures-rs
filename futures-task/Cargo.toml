@@ -1,11 +1,11 @@
 [package]
 name = "futures-task"
 version = "0.4.0-alpha.0"
-edition = "2018"
-rust-version = "1.68"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-homepage = "https://rust-lang.github.io/futures-rs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
 description = """
 Tools for working with tasks.
 """
@@ -18,7 +18,7 @@ alloc = []
 [dependencies]
 
 [dev-dependencies]
-futures = { path = "../futures" }
+futures = { workspace = true, default-features = true }
 
 [package.metadata.docs.rs]
 all-features = true

@@ -1,6 +1,6 @@
 use futures_01::executor::{
-    spawn as spawn01, Notify as Notify01, NotifyHandle as NotifyHandle01, Spawn as Spawn01,
-    UnsafeNotify as UnsafeNotify01,
+    Notify as Notify01, NotifyHandle as NotifyHandle01, Spawn as Spawn01,
+    UnsafeNotify as UnsafeNotify01, spawn as spawn01,
 };
 use futures_01::{Async as Async01, Future as Future01, Stream as Stream01};
 #[cfg(feature = "sink")]
@@ -294,10 +294,10 @@ where
 
         let result = self.in_notify(cx, |f| {
             if !close_started {
-                if let Some(item) = item {
-                    if let AsyncSink01::NotReady(item) = f.start_send(item)? {
-                        return Ok((Async01::NotReady, Some(item), false));
-                    }
+                if let Some(item) = item
+                    && let AsyncSink01::NotReady(item) = f.start_send(item)?
+                {
+                    return Ok((Async01::NotReady, Some(item), false));
                 }
 
                 if let Async01::NotReady = f.poll_complete()? {

@@ -1,5 +1,5 @@
 use futures::executor::block_on;
-use futures::future::{err, ok, try_join_all, Future, TryJoinAll};
+use futures::future::{Future, TryJoinAll, err, ok, try_join_all};
 use std::fmt::Debug;
 use std::pin::pin;
 

@@ -1,11 +1,11 @@
 [package]
 name = "futures-executor"
 version = "0.4.0-alpha.0"
-edition = "2018"
-rust-version = "1.68"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-homepage = "https://rust-lang.github.io/futures-rs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
 description = """
 Executors for asynchronous tasks based on the futures-rs library.
 """
@@ -16,12 +16,12 @@ std = ["futures-core/std", "futures-task/std", "futures-util/std"]
 thread-pool = ["std"]
 
 [dependencies]
-futures-core = { path = "../futures-core", version = "=1.0.0-alpha.0", default-features = false }
-futures-task = { path = "../futures-task", version = "=0.4.0-alpha.0", default-features = false }
-futures-util = { path = "../futures-util", version = "=0.4.0-alpha.0", default-features = false }
+futures-core = { workspace = true }
+futures-task = { workspace = true }
+futures-util = { workspace = true }
 
 [dev-dependencies]
-futures = { path = "../futures", features = ["thread-pool"] }
+futures = { workspace = true, default-features = true, features = ["thread-pool"] }
 
 [package.metadata.docs.rs]
 all-features = true

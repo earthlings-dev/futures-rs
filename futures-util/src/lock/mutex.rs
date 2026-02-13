@@ -102,11 +102,7 @@ impl<T: ?Sized> Mutex<T> {
     /// If the lock is currently held, this will return `None`.
     pub fn try_lock(&self) -> Option<MutexGuard<'_, T>> {
         let old_state = self.state.fetch_or(IS_LOCKED, Ordering::Acquire);
-        if (old_state & IS_LOCKED) == 0 {
-            Some(MutexGuard { mutex: self })
-        } else {
-            None
-        }
+        if (old_state & IS_LOCKED) == 0 { Some(MutexGuard { mutex: self }) } else { None }
     }
 
     /// Attempt to acquire the lock immediately.
@@ -171,10 +167,8 @@ impl<T: ?Sized> Mutex<T> {
                     // We were awoken, but then dropped before we could
                     // wake up to acquire the lock. Wake up another
                     // waiter.
-                    if wake_another {
-                        if let Some((_i, waiter)) = waiters.iter_mut().next() {
-                            waiter.wake();
-                        }
+                    if wake_another && let Some((_i, waiter)) = waiters.iter_mut().next() {
+                        waiter.wake();
                     }
                 }
             }

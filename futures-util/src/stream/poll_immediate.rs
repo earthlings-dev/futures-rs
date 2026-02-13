@@ -1,6 +1,6 @@
 use core::pin::Pin;
-use futures_core::task::{Context, Poll};
 use futures_core::Stream;
+use futures_core::task::{Context, Poll};
 use pin_project_lite::pin_project;
 
 pin_project! {

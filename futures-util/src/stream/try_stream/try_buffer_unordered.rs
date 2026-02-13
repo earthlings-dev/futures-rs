@@ -54,7 +54,9 @@ where
         // our queue of futures. Propagate errors from the stream immediately.
         while this.max.map(|max| this.in_progress_queue.len() < max.get()).unwrap_or(true) {
             match this.stream.as_mut().poll_next(cx)? {
-                Poll::Ready(Some(fut)) => this.in_progress_queue.push(fut.into_future()),
+                Poll::Ready(Some(fut)) => {
+                    this.in_progress_queue.push(TryFutureExt::into_future(fut))
+                }
                 Poll::Ready(None) | Poll::Pending => break,
             }
         }
@@ -66,11 +68,7 @@ where
         }
 
         // If more values are still coming from the stream, we're not done yet
-        if this.stream.is_done() {
-            Poll::Ready(None)
-        } else {
-            Poll::Pending
-        }
+        if this.stream.is_done() { Poll::Ready(None) } else { Poll::Pending }
     }
 }
 

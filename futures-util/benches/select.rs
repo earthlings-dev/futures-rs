@@ -4,7 +4,7 @@ extern crate test;
 use crate::test::Bencher;
 
 use futures::executor::block_on;
-use futures::stream::{repeat, select, StreamExt};
+use futures::stream::{StreamExt, repeat, select};
 
 #[bench]
 fn select_streams(b: &mut Bencher) {

@@ -1,6 +1,6 @@
 use futures::channel::oneshot::{self, Sender};
 use futures::executor::block_on;
-use futures::future::{poll_fn, FutureExt};
+use futures::future::{FutureExt, poll_fn};
 use futures::task::{Context, Poll};
 use futures_test::task::panic_waker_ref;
 use std::sync::mpsc;

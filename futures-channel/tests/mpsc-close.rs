@@ -238,32 +238,32 @@ fn stress_try_send_as_receiver_closes() {
                 Err(ref e) if e.is_full() => {}
                 Err(ref e) if e.is_disconnected() => {
                     // Test for evidence of the race condition.
-                    if let Some(prev_weak) = prev_weak {
-                        if prev_weak.upgrade().is_some() {
-                            // The previously sent item is still allocated.
-                            // However, there appears to be some aspect of the
-                            // concurrency that can legitimately cause the Arc
-                            // to be momentarily valid.  Spin for up to 100ms
-                            // waiting for the previously sent item to be
-                            // dropped.
-                            let t0 = Instant::now();
-                            let mut spins = 0;
-                            loop {
-                                if prev_weak.upgrade().is_none() {
-                                    break;
-                                }
-                                assert!(
-                                    t0.elapsed() < Duration::from_secs(SPIN_TIMEOUT_S),
-                                    "item not dropped on iteration {} after \
-                                     {} sends ({} successful). spin=({})",
-                                    i,
-                                    attempted_sends,
-                                    successful_sends,
-                                    spins
-                                );
-                                spins += 1;
-                                thread::sleep(Duration::from_millis(SPIN_SLEEP_MS));
+                    if let Some(prev_weak) = prev_weak
+                        && prev_weak.upgrade().is_some()
+                    {
+                        // The previously sent item is still allocated.
+                        // However, there appears to be some aspect of the
+                        // concurrency that can legitimately cause the Arc
+                        // to be momentarily valid.  Spin for up to 100ms
+                        // waiting for the previously sent item to be
+                        // dropped.
+                        let t0 = Instant::now();
+                        let mut spins = 0;
+                        loop {
+                            if prev_weak.upgrade().is_none() {
+                                break;
                             }
+                            assert!(
+                                t0.elapsed() < Duration::from_secs(SPIN_TIMEOUT_S),
+                                "item not dropped on iteration {} after \
+                                     {} sends ({} successful). spin=({})",
+                                i,
+                                attempted_sends,
+                                successful_sends,
+                                spins
+                            );
+                            spins += 1;
+                            thread::sleep(Duration::from_millis(SPIN_SLEEP_MS));
                         }
                     }
                     break;

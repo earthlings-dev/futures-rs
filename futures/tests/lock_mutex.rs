@@ -1,6 +1,6 @@
 use futures::channel::mpsc;
-use futures::executor::{block_on, ThreadPool};
-use futures::future::{ready, FutureExt};
+use futures::executor::{ThreadPool, block_on};
+use futures::future::{FutureExt, ready};
 use futures::lock::Mutex;
 use futures::stream::StreamExt;
 use futures::task::{Context, SpawnExt};

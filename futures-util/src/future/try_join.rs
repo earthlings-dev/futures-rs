@@ -1,4 +1,4 @@
-use crate::future::{assert_future, try_maybe_done, TryMaybeDone};
+use crate::future::{TryMaybeDone, assert_future, try_maybe_done};
 use core::fmt;
 use core::pin::Pin;
 use futures_core::future::{Future, TryFuture};

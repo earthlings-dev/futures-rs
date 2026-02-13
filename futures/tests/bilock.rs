@@ -1,11 +1,11 @@
 #![cfg(feature = "bilock")]
 
+use futures::Future;
+use futures::StreamExt;
 use futures::executor::block_on;
 use futures::future;
 use futures::stream;
 use futures::task::{Context, Poll};
-use futures::Future;
-use futures::StreamExt;
 use futures_test::task::noop_context;
 use futures_util::lock::BiLock;
 use std::pin::Pin;

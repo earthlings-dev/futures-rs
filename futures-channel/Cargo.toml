@@ -1,11 +1,11 @@
 [package]
 name = "futures-channel"
 version = "0.4.0-alpha.0"
-edition = "2018"
-rust-version = "1.68"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-homepage = "https://rust-lang.github.io/futures-rs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
 description = """
 Channels for asynchronous communication using futures-rs.
 """
@@ -14,15 +14,15 @@ Channels for asynchronous communication using futures-rs.
 default = ["std"]
 std = ["alloc", "futures-core/std"]
 alloc = ["futures-core/alloc"]
-sink = ["futures-sink"]
+sink = ["dep:futures-sink"]
 
 [dependencies]
-futures-core = { path = "../futures-core", version = "=1.0.0-alpha.0", default-features = false }
-futures-sink = { path = "../futures-sink", version = "=0.4.0-alpha.0", default-features = false, optional = true }
+futures-core = { workspace = true }
+futures-sink = { workspace = true, optional = true }
 
 [dev-dependencies]
-futures = { path = "../futures", default-features = true }
-futures-test = { path = "../futures-test", default-features = true }
+futures = { workspace = true, default-features = true }
+futures-test = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

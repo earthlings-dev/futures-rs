@@ -1,11 +1,12 @@
 [package]
 name = "futures-example-functional"
 version = "0.0.0"
-edition = "2018"
+edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
-futures = { path = "../../futures", features = ["thread-pool"] }
+futures = { workspace = true, default-features = true, features = ["thread-pool"] }
 
 [lints]
 workspace = true
