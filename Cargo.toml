@@ -72,4 +72,4 @@ tokio-io = "0.1.13"
 futures_01 = { version = "0.1", package = "futures" }
 
 [patch.crates-io]
-tokio = { git = "https://github.com/earthlings-dev/tokio.git" }
+tokio = { path = "../tokio/tokio" }
